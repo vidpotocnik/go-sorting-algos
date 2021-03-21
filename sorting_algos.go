@@ -26,6 +26,12 @@ func main() {
 	fmt.Println(QuickSort(inElements))
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
+
+	start = time.Now()
+	fmt.Println("Selection sort")
+	fmt.Println(SelectionSort(inElements))
+	duration = time.Since(start)
+	fmt.Println("Time lapsed: ", duration)
 }
 
 func BubbleSort(elements []int) []int {
@@ -94,5 +100,17 @@ func QuickSort(elements []int) []int {
 	QuickSort(elements[:left])
 	QuickSort(elements[left + 1:])
 
+	return elements
+}
+
+
+func SelectionSort(elements []int) []int {
+	for i := 0; i < len(elements); i++ {
+		for j:= i + 1; j < len(elements); j++ {
+			for elements[j] < elements[i] {
+				elements[i], elements[j] = elements[j], elements[i]
+			}
+		}
+	}
 	return elements
 }
