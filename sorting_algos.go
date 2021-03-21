@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 import "time"
 
 func main() {
@@ -8,18 +11,24 @@ func main() {
 
 	start := time.Now()
 	fmt.Println("Bubble sort")
-	fmt.Println(Bubble(inElements))
+	fmt.Println(BubbleSort(inElements))
 	duration := time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
 	start = time.Now()
 	fmt.Println("Merge sort")
-	fmt.Println(Merge(inElements))
+	fmt.Println(MergeSort(inElements))
+	duration = time.Since(start)
+	fmt.Println("Time lapsed: ", duration)
+
+	start = time.Now()
+	fmt.Println("Quick sort")
+	fmt.Println(QuickSort(inElements))
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 }
 
-func Bubble(elements []int) []int {
+func BubbleSort(elements []int) []int {
 	for i := len(elements); i > 0; i-- {
 		for j := 1; j < i; j++ {
 			if elements[j-1] > elements[j] {
@@ -32,7 +41,7 @@ func Bubble(elements []int) []int {
 	return elements
 }
 
-func Merge(elements []int) []int {
+func MergeSort(elements []int) []int {
 	if len(elements) < 2 {
 		return elements
 	}
@@ -61,4 +70,29 @@ func Merge(elements []int) []int {
 		}
 	}
 	return slice
+}
+
+func QuickSort(elements []int) []int {
+	if len(elements) < 2 {
+		return elements
+	}
+
+	left, right := 0, len(elements) - 1
+
+	pivot := rand.Int() % len(elements)
+	elements[pivot], elements[right] = elements[right], elements[pivot]
+
+	for i := range elements {
+		if elements[i] < elements[right] {
+			elements[i], elements[left] = elements[left], elements[i]
+			left++
+		}
+	}
+
+	elements[left], elements[right] = elements[right], elements[left]
+
+	QuickSort(elements[:left])
+	QuickSort(elements[left + 1:])
+
+	return elements
 }
