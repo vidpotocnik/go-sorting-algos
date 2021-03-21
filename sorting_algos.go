@@ -8,7 +8,7 @@ import "time"
 
 func main() {
 	// Testing sorting with 100.000 numbers shuffled randomly
-	a := makeRange(0, 100000)
+	a := MakeRange(0, 100000)
 
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
@@ -38,7 +38,7 @@ func main() {
 	fmt.Println("Time lapsed: ", duration)
 }
 
-func makeRange(min, max int) []int {
+func MakeRange(min, max int) []int {
 	a := make([]int, max-min+1)
 	for i := range a {
 		a[i] = min + i
