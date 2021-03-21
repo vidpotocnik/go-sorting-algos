@@ -7,31 +7,43 @@ import (
 import "time"
 
 func main() {
-	inElements := []int{67, 23, 11, 9075, 34, 26, 88, 97, 124, 9845, 5409, 36, 9884, 45879, 2144, 250, 760}
+	// Testing sorting with 100.000 numbers shuffled randomly
+	a := makeRange(0, 100000)
+
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 
 	start := time.Now()
 	fmt.Println("Bubble sort")
-	fmt.Println(BubbleSort(inElements))
+	BubbleSort(a)
 	duration := time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
 	start = time.Now()
 	fmt.Println("Merge sort")
-	fmt.Println(MergeSort(inElements))
+	MergeSort(a)
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
 	start = time.Now()
 	fmt.Println("Quick sort")
-	fmt.Println(QuickSort(inElements))
+	QuickSort(a)
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
 	start = time.Now()
 	fmt.Println("Selection sort")
-	fmt.Println(SelectionSort(inElements))
+	SelectionSort(a)
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
+}
+
+func makeRange(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := range a {
+		a[i] = min + i
+	}
+	return a
 }
 
 func BubbleSort(elements []int) []int {
