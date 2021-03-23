@@ -8,32 +8,41 @@ import "time"
 
 func main() {
 	// Testing sorting with 100.000 numbers shuffled randomly
-	a := MakeRange(0, 100000)
+	a := MakeRange(0, 15)
 
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 
 	start := time.Now()
 	fmt.Println("Bubble sort")
-	BubbleSort(a)
+	fmt.Printf("%v\n", BubbleSort(a))
 	duration := time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+
 	start = time.Now()
 	fmt.Println("Merge sort")
-	MergeSort(a)
+	fmt.Printf("%v\n", MergeSort(a))
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
+
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 
 	start = time.Now()
 	fmt.Println("Quick sort")
-	QuickSort(a)
+	fmt.Printf("%v\n", QuickSort(a))
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+
 	start = time.Now()
 	fmt.Println("Selection sort")
-	SelectionSort(a)
+	fmt.Printf("%v\n", SelectionSort(a))
 	duration = time.Since(start)
 	fmt.Println("Time lapsed: ", duration)
 }
@@ -59,35 +68,34 @@ func BubbleSort(elements []int) []int {
 	return elements
 }
 
-func MergeSort(elements []int) []int {
-	if len(elements) < 2 {
-		return elements
-	}
-
-	mid := len(elements) / 2
-	left := elements[:mid]
-	right := elements[mid:]
-
-	size, i, j := len(left)+len(right), 0, 0
-
-	slice := make([]int, size, size)
-
-	for el := 0; el < size; el++ {
-		if i > len(left)-1 && j <= len(right)-1 {
-			slice[el] = right[j]
-			j++
-		} else if j > len(right)-1 && i <= len(left)-1 {
-			slice[el] = left[i]
-			i++
-		} else if left[i] < right[j] {
-			slice[el] = left[i]
-			i++
+func Merge(l, r []int) []int {
+	ret := make([]int, 0, len(l)+len(r))
+	for len(l) > 0 || len(r) > 0 {
+		if len(l) == 0 {
+			return append(ret, r...)
+		}
+		if len(r) == 0 {
+			return append(ret, l...)
+		}
+		if l[0] <= r[0] {
+			ret = append(ret, l[0])
+			l = l[1:]
 		} else {
-			slice[el] = right[j]
-			j++
+			ret = append(ret, r[0])
+			r = r[1:]
 		}
 	}
-	return slice
+	return ret
+}
+
+func MergeSort(s []int) []int {
+	if len(s) <= 1 {
+		return s
+	}
+	n := len(s) / 2
+	l := MergeSort(s[:n])
+	r := MergeSort(s[n:])
+	return Merge(l, r)
 }
 
 func QuickSort(elements []int) []int {
